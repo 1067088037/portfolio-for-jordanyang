@@ -1,0 +1,50 @@
+version: '3.1'
+
+networks:
+  default:
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    container_name: wp_wordpress
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    expose:
+      - "80"
+    volumes:
+      - ./wordpress:/var/www/html
+    networks:
+      - default
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: wp_mysql
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - default
+  nginx:
+    image: nginx
+    restart: always
+    container_name: wp_nginx
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/cert:/etc/nginx/cert
+      - ./backup:/var/www/html/backup
+    networks:
+      - default

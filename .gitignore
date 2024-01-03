@@ -1,0 +1,11 @@
+.idea/
+
+backup/
+
+mysql/
+
+nginx/cert/
+nginx/logs/
+nginx/conf.d/.htpasswd
+
+wordpress/
