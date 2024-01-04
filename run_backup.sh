@@ -1,4 +1,4 @@
-backup_dir="./backup"
+backup_dir="/var/www/wordpress/backup"
 container="wp_mysql"
 user="root"
 pwd="123456"
@@ -11,7 +11,7 @@ time=$(date "+%Y%m%d_%H%M%S")
 mkdir -p $backup_dir
 
 # Backup database
-docker exec -it $container mysqldump -u$user -p$pwd $database > $backup_dir/db_"$time".sql
+docker exec $container mysqldump -u$user -p$pwd $database > $backup_dir/db_"$time".sql
 
 # Backup wordpress
 tar -zcvf $backup_dir/wp_"$time".tar.gz -C ./wordpress .
